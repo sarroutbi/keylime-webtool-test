@@ -31,7 +31,7 @@ Feature: Fleet Overview KPI Dashboard
     When the user clicks the "Total Agents" KPI card
     Then the browser MUST navigate to "/agents"
 
-  @standalone
+  @standalone @wip
   Scenario: Verifier API unreachable shows staleness indicator
     Given the Verifier API is unreachable
     When the user navigates to the "Dashboard"

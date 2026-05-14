@@ -4,6 +4,7 @@ import {
   Before,
   After,
   setWorldConstructor,
+  setDefaultTimeout,
   Status,
 } from "@cucumber/cucumber";
 import { chromium, request } from "playwright";
@@ -12,10 +13,11 @@ import { loadEnvironment } from "../config/env.js";
 import { scrubSensitiveData } from "./sensitive-data-scrubber.js";
 
 setWorldConstructor(CustomWorld);
+setDefaultTimeout(30_000);
 
 const env = loadEnvironment();
 
-BeforeAll(async function () {
+BeforeAll({ timeout: 30_000 }, async function () {
   CustomWorld.browser = await chromium.launch({
     channel: env.browserChannel,
     headless: env.headless,

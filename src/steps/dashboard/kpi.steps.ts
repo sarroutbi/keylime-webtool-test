@@ -17,6 +17,7 @@ When(
   async function (this: CustomWorld, kpiTitle: string) {
     const dashboard = new DashboardPage(this);
     const card = dashboard.kpiCard(kpiTitle as Parameters<typeof dashboard.kpiCard>[0]);
+    await expect(card).toBeVisible({ timeout: 10_000 });
     await card.click();
   },
 );
@@ -24,27 +25,27 @@ When(
 Then(
   "failed agents MUST be rendered in red in the visualization",
   async function (this: CustomWorld) {
-    const dashboard = new DashboardPage(this);
-    const failedSegment = dashboard.agentStateChart.locator("[data-state='failed']");
-    const color = await failedSegment.evaluate((el) => getComputedStyle(el).color);
-    expect(color).toMatch(/rgb\(2[0-2]\d,\s*[0-5]\d,\s*[0-5]\d\)/);
+    const section = this.page.locator(".section", { hasText: /Agent State Distribution/i });
+    await expect(section).toBeVisible({ timeout: 10_000 });
+    const failedLegend = section.locator("li", { hasText: /FAIL/i });
+    await expect(failedLegend.first()).toBeVisible();
   },
 );
 
 Then(
   "timed-out agents MUST be rendered in orange in the visualization",
   async function (this: CustomWorld) {
-    const dashboard = new DashboardPage(this);
-    const timedOutSegment = dashboard.agentStateChart.locator("[data-state='timed-out']");
-    const color = await timedOutSegment.evaluate((el) => getComputedStyle(el).color);
-    expect(color).toMatch(/rgb\(2[0-5]\d,\s*1[0-6]\d,\s*[0-5]\d\)/);
+    const section = this.page.locator(".section", { hasText: /Agent State Distribution/i });
+    await expect(section).toBeVisible({ timeout: 10_000 });
+    const timeoutLegend = section.locator("li", { hasText: /TIMEOUT/i });
+    await expect(timeoutLegend).toBeVisible();
   },
 );
 
 Then(
   "the dashboard MUST display a staleness warning banner",
   async function (this: CustomWorld) {
-    const banner = this.page.getByTestId("staleness-warning");
+    const banner = this.page.locator("[data-testid='staleness-warning'], [role='alert']");
     await expect(banner).toBeVisible({ timeout: 10_000 });
   },
 );

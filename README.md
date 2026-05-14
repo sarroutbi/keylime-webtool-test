@@ -33,8 +33,8 @@ sudo dnf install google-chrome-stable   # or: sudo dnf install chromium
 
 1. Start Mockoon mocks (upstream Keylime API simulation):
 ```bash
-npx @mockoon/cli start --data ../keylime-webtool-backend/test-data/verifier.json --port 3000 &
-npx @mockoon/cli start --data ../keylime-webtool-backend/test-data/registrar.json --port 3001 &
+mockoon-cli start --data ../keylime-webtool-backend/test-data/verifier.json --port 3000 &
+mockoon-cli start --data ../keylime-webtool-backend/test-data/registrar.json --port 3001 &
 ```
 
 2. Start the backend:

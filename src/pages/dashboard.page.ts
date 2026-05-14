@@ -7,8 +7,7 @@ type KpiTitle =
   | "Attestation Success Rate"
   | "Failed Attestations"
   | "Timed-Out Attestations"
-  | "Urgent Alerts"
-  | "Certificate Warnings";
+  | "Urgent Alerts";
 
 export class DashboardPage extends BasePage {
   constructor(world: CustomWorld) {
@@ -16,27 +15,15 @@ export class DashboardPage extends BasePage {
   }
 
   get pageTitle(): Locator {
-    return this.getByRole("heading", { name: /dashboard/i, level: 1 });
-  }
-
-  get agentStateChart(): Locator {
-    return this.getByTestId("agent-state-chart");
-  }
-
-  get alertDistributionChart(): Locator {
-    return this.getByTestId("alert-distribution-chart");
-  }
-
-  get attestationTimelineChart(): Locator {
-    return this.getByTestId("attestation-timeline-chart");
+    return this.getByRole("heading", { name: /fleet overview/i, level: 1 });
   }
 
   kpiCard(title: KpiTitle): Locator {
-    return this.locator(`[data-testid="kpi-card-${title.toLowerCase().replace(/\s+/g, "-")}"]`);
+    return this.getByRole("link", { name: new RegExp(title, "i") });
   }
 
-  getKpiValue(title: KpiTitle): Locator {
-    return this.kpiCard(title).locator("[data-testid='kpi-value']");
+  kpiCardValue(title: KpiTitle): Locator {
+    return this.kpiCard(title).locator(".kpi-card__value");
   }
 
   async goto(): Promise<void> {

@@ -15,15 +15,11 @@ export interface PaginatedResponse<T> {
 }
 
 export interface Agent {
-  agent_id: string;
+  id: string;
   ip: string | null;
   port: number | null;
-  operational_state: number;
-  operational_state_description: string;
-  attestation_count: number;
-  last_successful_attestation: string | null;
-  last_received_quote: string | null;
-  v: string | null;
+  state: number;
+  attestation_mode: string;
   regcount: number;
   accept_tpm_hash_algs: string[];
   accept_tpm_encryption_algs: string[];
@@ -34,20 +30,18 @@ export interface Agent {
   tpm_policy: string | null;
   mb_policy: string | null;
   ima_policy: string | null;
-  metadata: string | null;
-  severity_level: number | null;
+  ima_pcrs: number[];
 }
 
 export interface KpiData {
-  total_agents: number;
-  active_agents: number;
+  total_active_agents: number;
   failed_agents: number;
-  timed_out_agents: number;
   attestation_success_rate: number;
   average_attestation_latency_ms: number;
   certificate_expiry_warnings: number;
   active_ima_policies: number;
   revocation_events_24h: number;
+  registration_count: number;
 }
 
 export interface AttestationSummary {

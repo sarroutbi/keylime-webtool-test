@@ -16,19 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
-          repository: ${{ github.repository_owner }}/keylime-webtool-backend
+          repository: ${{ github.repository_owner }}/backend
           path: backend
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
-          repository: ${{ github.repository_owner }}/keylime-webtool-frontend
+          repository: ${{ github.repository_owner }}/frontend
           path: frontend
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -49,23 +49,24 @@ jobs:
 
       - name: Start Mockoon mocks
         run: |
-          npx @mockoon/cli start --data backend/test-data/verifier.json --port 3000 --daemon-off &
-          npx @mockoon/cli start --data backend/test-data/registrar.json --port 3001 --daemon-off &
-          sleep 3
+          npx mockoon-cli start --data backend/test-data/verifier.json --port 3000 &
+          npx mockoon-cli start --data backend/test-data/registrar.json --port 3001 &
+          for i in $(seq 1 30); do curl -sf http://localhost:3000/v2/agents/ > /dev/null 2>&1 && break || sleep 1; done
+          for i in $(seq 1 30); do curl -sf http://localhost:3001/v3/agents/ > /dev/null 2>&1 && break || sleep 1; done
 
       - name: Start backend
         run: |
           cd backend && ./target/release/keylime-webtool-backend &
-          sleep 3
+          for i in $(seq 1 90); do curl -sf http://localhost:8080/api/kpis > /dev/null 2>&1 && break || sleep 1; done
         env:
           KEYLIME_VERIFIER_URL: http://localhost:3000
           KEYLIME_REGISTRAR_URL: http://localhost:3001
-          DATABASE_URL: sqlite::memory:
+          DATABASE_URL: "sqlite::memory:"
 
       - name: Start frontend
         run: |
           cd frontend && npm run dev -- --host &
-          sleep 5
+          for i in $(seq 1 30); do curl -sf http://localhost:5173 > /dev/null 2>&1 && break || sleep 1; done
 
       - name: Run standalone E2E tests
         run: npm run test:standalone
@@ -74,7 +75,7 @@ jobs:
 
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e2e-standalone-report
           path: reports/
@@ -85,14 +86,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
-          repository: ${{ github.repository_owner }}/keylime-webtool-backend
+          repository: ${{ github.repository_owner }}/backend
           path: backend
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -107,25 +108,26 @@ jobs:
 
       - name: Start Mockoon mocks
         run: |
-          npx @mockoon/cli start --data backend/test-data/verifier.json --port 3000 --daemon-off &
-          npx @mockoon/cli start --data backend/test-data/registrar.json --port 3001 --daemon-off &
-          sleep 3
+          npx mockoon-cli start --data backend/test-data/verifier.json --port 3000 &
+          npx mockoon-cli start --data backend/test-data/registrar.json --port 3001 &
+          for i in $(seq 1 30); do curl -sf http://localhost:3000/v2/agents/ > /dev/null 2>&1 && break || sleep 1; done
+          for i in $(seq 1 30); do curl -sf http://localhost:3001/v3/agents/ > /dev/null 2>&1 && break || sleep 1; done
 
       - name: Start backend
         run: |
           cd backend && ./target/release/keylime-webtool-backend &
-          sleep 3
+          for i in $(seq 1 90); do curl -sf http://localhost:8080/api/kpis > /dev/null 2>&1 && break || sleep 1; done
         env:
           KEYLIME_VERIFIER_URL: http://localhost:3000
           KEYLIME_REGISTRAR_URL: http://localhost:3001
-          DATABASE_URL: sqlite::memory:
+          DATABASE_URL: "sqlite::memory:"
 
       - name: Run API E2E tests
         run: npm run test:api
 
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e2e-api-report
           path: reports/
@@ -136,9 +138,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm

@@ -15,8 +15,8 @@ Feature: Agent API Endpoint Validation
   Scenario: Agent detail returns valid agent
     When the client sends GET "/api/agents/d432fbb3-d2f1-4a97-9ef7-75bd81c00000"
     Then the response status MUST be 200
-    And the response data MUST contain "agent_id"
-    And the response data MUST contain "operational_state"
+    And the response data MUST contain "id"
+    And the response data MUST contain "state"
 
   Scenario: Agent search by UUID
     When the client sends GET "/api/agents/search?q=d432fbb3"

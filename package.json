@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.2.0",
+    "@mockoon/cli": "^9.6.1",
     "@playwright/test": "^1.52.0",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/node": "^22.0.0",

@@ -17,8 +17,7 @@ Feature: KPI API Endpoint Validation
 
   Scenario: KPI data includes required fields
     When the client sends GET "/api/kpis"
-    Then the response data MUST contain "total_agents"
-    And the response data MUST contain "active_agents"
+    Then the response data MUST contain "total_active_agents"
     And the response data MUST contain "failed_agents"
     And the response data MUST contain "attestation_success_rate"
 
