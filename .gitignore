@@ -1,0 +1,27 @@
+node_modules/
+reports/
+coverage/
+dist/
+videos/
+screenshots/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

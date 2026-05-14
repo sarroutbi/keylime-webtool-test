@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "noEmit": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@support/*": ["./src/support/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@steps/*": ["./src/steps/*"],
+      "@fixtures/*": ["./src/fixtures/*"],
+      "@config/*": ["./src/config/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "reports", "dist"]
+}
