@@ -60,7 +60,7 @@ jobs:
         env:
           KEYLIME_VERIFIER_URL: http://localhost:3000
           KEYLIME_REGISTRAR_URL: http://localhost:3001
-          DATABASE_URL: sqlite::memory:
+          DATABASE_URL: "sqlite::memory:"
 
       - name: Start frontend
         run: |
@@ -118,7 +118,7 @@ jobs:
         env:
           KEYLIME_VERIFIER_URL: http://localhost:3000
           KEYLIME_REGISTRAR_URL: http://localhost:3001
-          DATABASE_URL: sqlite::memory:
+          DATABASE_URL: "sqlite::memory:"
 
       - name: Run API E2E tests
         run: npm run test:api
